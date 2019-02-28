@@ -18,9 +18,9 @@ private:
 
   // Copy from array
   void copyFrom(T const* A, int lo, int hi);
-  // Expand
+  // Expand capacity double
   void expand();
-  // Shrink
+  // Shrink capacity to size
   void shrink();
   
 public:
@@ -33,15 +33,18 @@ public:
   Vector(T const* A, int rank);
   Vector(T const* A, int lo, int hi);
   Vector(T const* A);
-  Vector<T>& operator= (Vector<T> const& v);
+  Vector();
+  Vector<T>& operator= (const Vector<T>& v);
 
   /*!
    * Destructor
    */
   ~Vector();
 
-  const T* data();
-  const int size();
+  T* const data();
+  int const size();
+
+  void reserve(unsigned int n);
 
 
 };
