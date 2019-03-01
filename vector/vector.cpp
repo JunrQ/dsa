@@ -1,5 +1,7 @@
 #include "vector.hpp"
 
+#include <stdlib.h>
+
 namespace dsa {
 
 
@@ -96,7 +98,6 @@ void Vector<T>::reserve(unsigned int n) {
   }
 }
 
-
 template <typename T>
 void Vector<T>::push_back(const T& ele) {
   if (_size == _capacity) expand();
@@ -120,20 +121,88 @@ void Vector<T>::max_heapify(T* array, int i, int size) {
 
 template <typename T>
 void Vector<T>::build_max_heap(T*, int size) {
-    for (int i = size / 2; i >= 1; i--)
+    for (int i = size / 2; i >= 0; i--)
       max_heapify(_elem, i, size);
 }
 
 template <typename T>
 void Vector<T>::heapsort() {
   build_max_heap(_elem, _size);
+  int s = _size;
+  for (int i = _size - 1; i > 0; i++) {
+    exchange(_elem[0], _elem[i]);
+    max_heapify(_elem, 0, --s);
+  }
+  _sorted = true;
+}
 
-  for (int i = _size; i > 1; i++) {
-    exchange(_elem[1], _elem[i]);
+template <typename T>
+void Vector<T>::quicksort() {
 
+}
 
+template <typename T>
+void Vector<T>::shuffle() {
+  for (int i = _size; i >= 1; i++) {
+    int tmp = rand() % _size;
+    exchange(_elem[i], _elem[tmp]);
   }
 }
+
+template <typename T>
+int sequential_find(const T* key) {
+  int i = _size - 1;
+  while (i >= 0) {
+    if (_elem[i--] == *key) break;
+  }
+  return i;
+}
+
+template <typename T>
+int binary_find(const T* key) {
+  int hi = _size - 1;
+  int lo = 0;
+  int mid;
+  while (hi - lo > 0) {
+    mid = (hi - lo) / 2;
+    if (_elem[mid] > *key) {
+      hi = mid - 1;
+    } else {
+      if (_elem[mid] == *key) return mid;
+      else lo = mid + 1;
+    }
+  }
+  return -1;
+}
+
+template <typename T>
+int Vector<T>::partition(T* array, int p, int r) {
+  T x = array[r];
+  int i = p - 1;
+  for (int j = p; j < r; j++) {
+    if (array[j] <= x) {
+      exchange(array[++i], array[j]);
+    }
+  }
+  exchange(array[i], array[r]);
+}
+
+template <typename T>
+void Vector<T>::quicksort_imp(T* array, int p, int r) {
+  if (p < r) {
+    int q = partition(array, p, r);
+    quicksort_imp(array, p, q - 1);
+    quicksort_imp(array, q + 1, r);
+  }
+}
+
+template <typename T>
+void Vector<T>::quicksort() {
+  quicksort_imp(_elem, 0, _size - 1);
+}
+
+
+
 
 
 

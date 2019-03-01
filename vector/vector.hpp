@@ -35,6 +35,9 @@ private:
   inline right(int i) { return 2 * i + 1; }
   inline parent(int i) { return i / 2; }
 
+  int partition(T*, int, int);
+  void quicksort_imp(T*, int, int);
+
   inline exchange(T* x, T* y) {
     T tmp = *x;
     *x = *y;
@@ -84,7 +87,21 @@ public:
   void push_back(const T& ele);
 
   // Sort algorithms
+  void mergesort();
   void heapsort();
+  void quicksort();
+
+  // shuffle
+  void shuffle();
+
+  // find
+  int sequential_find(const T* key);
+  int binary_find(const T* key);
+
+  // statistics
+  T mean();
+  T max();
+  T min();
 
 
 
