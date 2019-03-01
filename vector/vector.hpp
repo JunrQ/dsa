@@ -24,6 +24,28 @@ private:
   void expand();
   // Shrink capacity to size
   void shrink();
+
+  // auxiliary function
+  // build max heap
+  void build_max_heap(T*, int);
+  // maintain max-heap property, assume left[i]
+  // right[i] are max-heaps, bug a[i] might not
+  void max_heapify(T*, int, int);
+  inline left(int i) { return 2 * i; }
+  inline right(int i) { return 2 * i + 1; }
+  inline parent(int i) { return i / 2; }
+
+  inline exchange(T* x, T* y) {
+    T tmp = *x;
+    *x = *y;
+    *y = tmp;
+  }
+
+  inline exchange(T& x, T& y) {
+    T tmp = x;
+    x = y;
+    y = tmp;
+  }
   
 public:
   /*!
