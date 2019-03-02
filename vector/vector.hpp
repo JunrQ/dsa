@@ -17,8 +17,6 @@ private:
   int _capacity;
   // elements
   T* _elem;
-  // Whether sorted
-  bool _sorted=false;
 
   // Copy from array
   void copyFrom(T const* A, int lo, int hi);
@@ -33,20 +31,20 @@ private:
   // maintain max-heap property, assume left[i]
   // right[i] are max-heaps, bug a[i] might not
   void max_heapify(T*, int, int);
-  inline left(int i) { return 2 * i; }
-  inline right(int i) { return 2 * i + 1; }
-  inline parent(int i) { return i / 2; }
+  inline int left(int i) { return 2 * i; }
+  inline int right(int i) { return 2 * i + 1; }
+  inline int parent(int i) { return i / 2; }
 
   int partition(T*, int, int);
   void quicksort_imp(T*, int, int);
 
-  inline exchange(T* x, T* y) {
+  inline void exchange(T* x, T* y) {
     T tmp = *x;
     *x = *y;
     *y = tmp;
   }
 
-  inline exchange(T& x, T& y) {
+  inline void exchange(T& x, T& y) {
     T tmp = x;
     x = y;
     y = tmp;
@@ -67,7 +65,9 @@ public:
   // Operator
   Vector<T>& operator= (const Vector<T>& v);
   T& operator[] (int idx);
-  friend std::ostream& operator<< (std::ostream&, Vector<T>&);
+
+  // non-member, friend
+  friend std::ostream& operator<< (std::ostream&, const Vector<T>&);
 
 
   /*!
@@ -105,6 +105,11 @@ public:
    * \brief Remove duplicate elements;
    */
   int deduplicate();
+  /*
+   * \brief Remove duplicate elements in ordered vector.
+   */
+  int ordered_uniquify_v1();
+  int ordered_uniquify();
 
   /*
    * \brief Traverse vector.
@@ -126,14 +131,20 @@ public:
   // shuffle
   void shuffle();
 
-  // find
+  // find - unordered
   int sequential_find(const T& key, int lo, int hi) const;
-  int binary_find(const T* key) const;
+  // search - ordered
+  int binary_search(const T* key) const;
+  int binary_search_v1(const T& key, int lo, int hi) const;
+  int binary_search_v2(const T& key, int lo, int hi) const;
+  int binary_search_v3(const T& key, int lo, int hi) const;
 
   // statistics
   T mean();
   T max();
   T min();
+
+  int disordered() const;
 
 
 

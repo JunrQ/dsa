@@ -54,8 +54,6 @@ T& Vector<T>::operator[] (int idx) {
   return _elem[idx];
 }
 
-
-
 template <typename T>
 inline int Vector<T>::capacity() const {
   return _capacity;
@@ -137,12 +135,6 @@ void Vector<T>::heapsort() {
     exchange(_elem[0], _elem[i]);
     max_heapify(_elem, 0, --s);
   }
-  _sorted = true;
-}
-
-template <typename T>
-void Vector<T>::quicksort() {
-
 }
 
 template <typename T>
@@ -163,12 +155,12 @@ int Vector<T>::sequential_find(const T& key, int lo, int hi) const {
 }
 
 template <typename T>
-int Vector<T>::binary_find(const T* key) const {
+int Vector<T>::binary_search(const T* key) const {
   int hi = _size - 1;
   int lo = 0;
   int mid;
   while (hi - lo > 0) {
-    mid = (hi - lo) / 2;
+    mid = (hi + lo) / 2;
     if (_elem[mid] > *key) {
       hi = mid - 1;
     } else {
@@ -177,6 +169,35 @@ int Vector<T>::binary_find(const T* key) const {
     }
   }
   return -1;
+}
+
+template <typename T>
+int Vector<T>::binary_search_v1(const T& key, int lo, int hi) const {
+  while (lo < hi) {
+    int mid = (lo + hi) >> 1;
+    if (key < _elem[mid]) hi = mid;
+    else if (key > _elem[mid]) lo = mid + 1;
+    else return mid;
+  }
+  return -1;
+}
+
+template <typename T>
+int Vector<T>::binary_search_v2(const T& key, int lo, int hi) const {
+  while (1 < hi - lo) {
+    int mid = (hi + lo) >> 1;
+    (key < _elem[mid]) ? hi = mid : lo = mid;
+  }
+  return (key == _elem[lo]) ? lo : -1;
+}
+
+template <typename T>
+int Vector<T>::binary_search_v3(const T& key, int lo, int hi) const {
+  while (lo < hi) {
+    int mid = (hi + lo) >> 1;
+    (key < _elem[mid]) ? hi = mid : lo = mid + 1;
+  }
+  return --lo;
 }
 
 template <typename T>
@@ -233,12 +254,53 @@ T Vector<T>::remove(int r) {
 template <typename T>
 int Vector<T>::deduplicate() {
   int s = _size;
-  int r = 0
+  int r = 0;
   while (r < _size) {
     sequential_find(_elem[r] < 0) ?
       r++ : remove(_elem[r])
   }
 }
+
+template <typename T>
+std::ostream& operator<< (std::ostream& os, const Vector<T>& vec) {
+  os << "size : " << vec._size << "elements: ";
+  for (int i = 0; i < vec._size - 1; i++) {
+    os << vec._elem[i] << " ";
+  }
+  os << vec._elem[vec._size - 1];
+}
+
+template <typename T>
+int Vector<T>::disordered() const {
+  int n = 0;
+  for (int i = 1; i < _size; i++) {
+    if (_elem[i - 1] > _elem[i]) n++;
+  }
+  return n;
+}
+
+template <typename T>
+int Vector<T>::ordered_uniquify_v1() {
+  int s = _size;
+  int i = 0;
+  while (i < _size) { /* remove is time consuming */
+    (_elem[i] == _elem[i + 1]) ? remove(i + 1) : i++;
+  }
+  return s - _size;
+}
+
+template <typename T>
+int Vector<T>::ordered_uniquify() {
+  int i = 0, j = 0;
+  while (++j < _size) {
+    if (_elem[i] != _elem[j]) _elem[++i] = _elem[j];
+  }
+  _size = ++i;
+  shrink();
+  return j - i;
+}
+
+
 
 
 
