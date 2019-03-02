@@ -54,6 +54,8 @@ T& Vector<T>::operator[] (int idx) {
   return _elem[idx];
 }
 
+
+
 template <typename T>
 inline int Vector<T>::capacity() const {
   return _capacity;
@@ -152,16 +154,16 @@ void Vector<T>::shuffle() {
 }
 
 template <typename T>
-int sequential_find(const T* key) {
-  int i = _size - 1;
+int Vector<T>::sequential_find(const T& key, int lo, int hi) const {
+  int i = hi - lo;
   while (i >= 0) {
-    if (_elem[i--] == *key) break;
+    if (_elem[lo + i--] == *key) return lo + i;
   }
   return i;
 }
 
 template <typename T>
-int binary_find(const T* key) {
+int Vector<T>::binary_find(const T* key) const {
   int hi = _size - 1;
   int lo = 0;
   int mid;
@@ -228,12 +230,15 @@ T Vector<T>::remove(int r) {
   return e;
 }
 
-
-
-
-
-
-
+template <typename T>
+int Vector<T>::deduplicate() {
+  int s = _size;
+  int r = 0
+  while (r < _size) {
+    sequential_find(_elem[r] < 0) ?
+      r++ : remove(_elem[r])
+  }
+}
 
 
 

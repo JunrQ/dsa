@@ -4,6 +4,8 @@
  * \author ZhouJunr
  */
 
+#include <iostream>
+
 namespace dsa {
 
 
@@ -65,6 +67,8 @@ public:
   // Operator
   Vector<T>& operator= (const Vector<T>& v);
   T& operator[] (int idx);
+  friend std::ostream& operator<< (std::ostream&, Vector<T>&);
+
 
   /*!
    * Destructor
@@ -101,6 +105,17 @@ public:
    * \brief Remove duplicate elements;
    */
   int deduplicate();
+
+  /*
+   * \brief Traverse vector.
+   */
+  void traverse(void (*visit) (T&)) {
+    for (int i = 0; i < _size; i++) visit(_elem[i]);
+  }
+  template <typename VST>
+  void traverse(VST& visit) {
+    for (int i = 0; i < _size; i++) visit(_elem[i]);
+  }
   
 
   // Sort algorithms
@@ -112,8 +127,8 @@ public:
   void shuffle();
 
   // find
-  int sequential_find(const T* key);
-  int binary_find(const T* key);
+  int sequential_find(const T& key, int lo, int hi) const;
+  int binary_find(const T* key) const;
 
   // statistics
   T mean();
