@@ -66,6 +66,7 @@ Vector<T>::~Vector() {
 
 template <typename T>
 void Vector<T>::expand() {
+  if (_size < _capacity) return;
   T* _e = new T[_capacity *= 2];
   for (int s = 0; s < _size; s++) _e[s] = _elem[s];
   delete [] _elem;
@@ -74,6 +75,7 @@ void Vector<T>::expand() {
 
 template <typename T>
 void Vector<T>::shrink() {
+  if (_size << 2 > _capacity) return; // 25%
   T* _e = new T[_size];
   for (int s = 0; s < _size; s++) _e[s] = _elem[s];
   delete [] _elem;
@@ -201,6 +203,30 @@ void Vector<T>::quicksort() {
   quicksort_imp(_elem, 0, _size - 1);
 }
 
+template <typename T>
+int Vector<T>::insert(int r, const T& ele) {
+  expand(); // See if expand is needed
+  for (int i = _size; i > r; i--) _elem[i] = _elem[i - 1];
+  _elem[r] = ele;
+  _size++;
+  return r;
+}
+
+template <typename T>
+int Vector<T>::remove(int lo, int hi) {
+  if (lo == hi) return 0;
+  while (hi < _size) _elem[lo++] = _elem[hi++];
+  _size = lo;
+  shrink();
+  return (hi - lo);
+}
+
+template <typename T>
+T Vector<T>::remove(int r) {
+  T e = _elem[r];
+  remove(r, r + 1);
+  return e;
+}
 
 
 

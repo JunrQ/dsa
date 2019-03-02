@@ -86,6 +86,23 @@ public:
    */
   void push_back(const T& ele);
 
+  /*
+   * \brief Insert one element.
+   */
+  int insert(int r, const T& ele);
+
+  /*
+   * \brief Remove a interval, return #ele removed.
+   */
+  int remove(int lo, int hi);
+  T remove(int r);
+
+  /*
+   * \brief Remove duplicate elements;
+   */
+  int deduplicate();
+  
+
   // Sort algorithms
   void mergesort();
   void heapsort();
