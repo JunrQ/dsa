@@ -38,6 +38,9 @@ private:
   int partition(T*, int, int);
   void quicksort_imp(T*, int, int);
 
+  bool bubble(int lo, int hi);
+  void merge(int, int, int);
+
   inline void exchange(T* x, T* y) {
     T tmp = *x;
     *x = *y;
@@ -59,7 +62,6 @@ public:
   // Copy from array
   Vector(T const* A, int rank);
   Vector(T const* A, int lo, int hi);
-  Vector(T const* A);
   Vector();
 
   // Operator
@@ -124,9 +126,13 @@ public:
   
 
   // Sort algorithms
-  void mergesort();
+  void mergesort(int lo, int hi);
   void heapsort();
   void quicksort();
+  void bubblesort();
+  void bubblesort_v1(int lo, int hi);
+  void selectionsort();
+
 
   // shuffle
   void shuffle();

@@ -26,6 +26,11 @@ Vector<T>::Vector(T const* A, int lo, int hi) {
 }
 
 template <typename T>
+Vector<T>::Vector(T const* A, int rank) {
+  copyFrom(A, 0, rank);
+}
+
+template <typename T>
 Vector<T>::Vector() {
   _elem = nullptr;
   _capacity = 0;
@@ -201,6 +206,30 @@ int Vector<T>::binary_search_v3(const T& key, int lo, int hi) const {
 }
 
 template <typename T>
+void Vector<T>::merge(int lo, int mi, int hi) {
+  T* A = _elem + lo;
+  int lb = mi - lo;
+  T* B = new T[lb];
+  for (int i = 0; i < lb; B[i] = A[i++]);
+  int lc = hi - mi;
+  T* C = _elem + mi;
+  for (int i = 0, j = 0, k = 0; (j < lb) || (k < lc); ) {
+    if ((j < lb) && (!(k < lc) || (B[j] <= C[k]))) A[i++] = B[j++];
+    if ((k < lc) && (!(j < lb) || (C[k] < B[j]))) A[i++] = C[j++];
+  }
+  delete [] B;
+}
+
+template <typename T>
+void Vector<T>::mergesort(int lo, int hi) {
+  if (hi - lo < 2) return;
+  int mid = (hi + lo) / 2;
+  mergesort(lo, mid);
+  mergesort(mid, hi);
+  merge(lo, mid, hi);
+}
+
+template <typename T>
 int Vector<T>::partition(T* array, int p, int r) {
   T x = array[r];
   int i = p - 1;
@@ -224,6 +253,31 @@ void Vector<T>::quicksort_imp(T* array, int p, int r) {
 template <typename T>
 void Vector<T>::quicksort() {
   quicksort_imp(_elem, 0, _size - 1);
+}
+
+template <typename T>
+bool Vector<T>::bubble(int lo, int hi) {
+  bool sorted = true;
+  while (++lo < hi) {
+    if (_elem[lo - 1] > _elem[lo]) {
+      sorted = false;
+      exchange(_elem[lo - 1], _elem[lo]);
+    }
+  }
+  return sorted;
+}
+
+template <typename T>
+void Vector<T>::bubblesort() {
+  int hi = _size;
+  while (!bubblesort(0, hi--)) ;
+}
+
+template <typename T>
+void Vector<T>::bubblesort_v1(int lo, int hi) {
+  // 记录最后一次交换的索引
+  // 下次冒泡过程无须考虑索引之后的部分
+
 }
 
 template <typename T>
@@ -257,7 +311,7 @@ int Vector<T>::deduplicate() {
   int r = 0;
   while (r < _size) {
     sequential_find(_elem[r] < 0) ?
-      r++ : remove(_elem[r])
+      r++ : remove(_elem[r]);
   }
 }
 
