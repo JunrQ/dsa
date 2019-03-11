@@ -1,16 +1,18 @@
 #include "vector.hpp"
 
 #include <stdlib.h>
+#include <iostream>
 
 namespace dsa {
 
 
 template <typename T>
 void Vector<T>::copyFrom(T const* A, int lo, int hi) {
-  if (_elem) delete [] _elem;
   _elem = new T[_capacity = 2 * (hi - lo)];
   _size = hi - lo;
-  for (int s = 0; s < _size; s++) _elem[s] = A[lo + s];
+  for (int s = 0; s < _size; s++) {
+    _elem[s] = A[lo + s];
+  }
 }
 
 template <typename T>
@@ -127,16 +129,16 @@ void Vector<T>::max_heapify(T* array, int i, int size) {
 }
 
 template <typename T>
-void Vector<T>::build_max_heap(T*, int size) {
-    for (int i = size / 2; i >= 0; i--)
-      max_heapify(_elem, i, size);
+void Vector<T>::build_max_heap(T* a, int size) {
+  for (int i = size / 2; i >= 0; i--)
+    max_heapify(a, i, size);
 }
 
 template <typename T>
 void Vector<T>::heapsort() {
   build_max_heap(_elem, _size);
   int s = _size;
-  for (int i = _size - 1; i > 0; i++) {
+  for (int i = _size - 1; i > 0; i--) {
     exchange(_elem[0], _elem[i]);
     max_heapify(_elem, 0, --s);
   }
@@ -144,9 +146,11 @@ void Vector<T>::heapsort() {
 
 template <typename T>
 void Vector<T>::shuffle() {
-  for (int i = _size; i >= 1; i++) {
-    int tmp = rand() % _size;
-    exchange(_elem[i], _elem[tmp]);
+  int max_idx = _size - 1;
+  for (int i = max_idx; i >= 1; i--) {
+    int tmp = rand() % max_idx;
+    if (tmp != i)
+      exchange(_elem[i], _elem[tmp]);
   }
 }
 
@@ -215,7 +219,7 @@ void Vector<T>::merge(int lo, int mi, int hi) {
   T* C = _elem + mi;
   for (int i = 0, j = 0, k = 0; (j < lb) || (k < lc); ) {
     if ((j < lb) && (!(k < lc) || (B[j] <= C[k]))) A[i++] = B[j++];
-    if ((k < lc) && (!(j < lb) || (C[k] < B[j]))) A[i++] = C[j++];
+    if ((k < lc) && (!(j < lb) || (C[k] < B[j]))) A[i++] = C[k++];
   }
   delete [] B;
 }
@@ -239,6 +243,7 @@ int Vector<T>::partition(T* array, int p, int r) {
     }
   }
   exchange(array[i], array[r]);
+  return i;
 }
 
 template <typename T>
@@ -315,13 +320,13 @@ int Vector<T>::deduplicate() {
   }
 }
 
-template <typename T>
-std::ostream& operator<< (std::ostream& os, const Vector<T>& vec) {
-  os << "size : " << vec._size << "elements: ";
+template <typename ST>
+std::ostream& operator<< (std::ostream& os, const Vector<ST>& vec) {
+  os << "size : " << vec._size << std::endl << "elements: ";
   for (int i = 0; i < vec._size - 1; i++) {
     os << vec._elem[i] << " ";
   }
-  os << vec._elem[vec._size - 1];
+  os << vec._elem[vec._size - 1] << std::endl;
 }
 
 template <typename T>

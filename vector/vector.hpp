@@ -6,6 +6,8 @@
 
 #include <iostream>
 
+#define DEBUG
+
 namespace dsa {
 
 
@@ -69,8 +71,9 @@ public:
   T& operator[] (int idx);
 
   // non-member, friend
-  friend std::ostream& operator<< (std::ostream&, const Vector<T>&);
-
+  // https://stackoverflow.com/questions/4660123/overloading-friend-operator-for-template-class/4661372#4661372
+  template<typename ST>
+  friend std::ostream& operator<< (std::ostream& os, const Vector<ST>& vec);
 
   /*!
    * Destructor
