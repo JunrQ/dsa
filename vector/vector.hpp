@@ -6,10 +6,7 @@
 
 #include <iostream>
 
-#define DEBUG
-
 namespace dsa {
-
 
 template <typename T> class Vector {
 private:

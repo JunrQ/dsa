@@ -1,4 +1,8 @@
 
+#include <iostream>
+
+namespace dsa {
+
 // ListNode
 template <typename T>
 struct ListNode {
@@ -35,7 +39,30 @@ protected:
   // insertionSort
 
 public:
+  // Constructor
   List() { init(); }
+  List(List<T> const& L);
+  List(List<T> const& L, int lo, int n);
+  List(ListNode<T>* p, int n);
+  
+  // Destructor
+  ~List();
+
+  int size() { return _size; }
+  ListNode<T>* first();
+  ListNode<T>* last();
+  T remove(ListNode<T>* p); // TODO
+
+  // Operator
+  T& operator[] (int r) const;
+
+  // Insert
+  ListNode<T>* insertAsFirst(T const& e);
+  ListNode<T>* insertAsLast(T const& e);
+  ListNode<T>* insertAfter(ListNode<T>* p, T const& e);
+  ListNode<T>* insertBefore(ListNode<T>* p, T const& e);
   
 };
 
+
+} // namespace dsa
