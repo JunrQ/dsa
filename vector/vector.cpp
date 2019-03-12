@@ -110,7 +110,7 @@ void Vector<T>::reserve(unsigned int n) {
 template <typename T>
 void Vector<T>::push_back(const T& ele) {
   if (_size == _capacity) expand();
-  _elem[++_size] = ele;
+  _elem[_size++] = ele;
 }
 
 // Sort algorithms
@@ -158,9 +158,15 @@ template <typename T>
 int Vector<T>::sequential_find(const T& key, int lo, int hi) const {
   int i = hi - lo;
   while (i >= 0) {
-    if (_elem[lo + i--] == *key) return lo + i;
+    if (_elem[lo + i--] == key) return lo + i;
   }
   return i;
+}
+
+template <typename T>
+int Vector<T>::sequential_find(const T& key, int lo) const {
+  int hi = _size - 1;
+  return sequential_find(key, lo, hi);
 }
 
 template <typename T>
@@ -236,10 +242,10 @@ void Vector<T>::mergesort(int lo, int hi) {
 template <typename T>
 int Vector<T>::partition(T* array, int p, int r) {
   T x = array[r];
-  int i = p - 1;
+  int i = p;
   for (int j = p; j < r; j++) {
     if (array[j] <= x) {
-      exchange(array[++i], array[j]);
+      exchange(array[i++], array[j]);
     }
   }
   exchange(array[i], array[r]);
@@ -274,15 +280,41 @@ bool Vector<T>::bubble(int lo, int hi) {
 
 template <typename T>
 void Vector<T>::bubblesort() {
-  int hi = _size;
-  while (!bubblesort(0, hi--)) ;
+  int hi = _size - 1;
+  while (!bubblesort_aux(0, hi--)) ;
+}
+
+template <typename T>
+bool Vector<T>::bubblesort_aux(int lo, int hi) {
+  bool sorted = true;
+  for (int i = lo; i < hi; i++) {
+    if (_elem[i] > _elem[i + 1]) {
+      exchange(_elem[i], _elem[i + 1]);
+      sorted = false;
+    }
+  }
+  return sorted;
 }
 
 template <typename T>
 void Vector<T>::bubblesort_v1(int lo, int hi) {
-  // 记录最后一次交换的索引
-  // 下次冒泡过程无须考虑索引之后的部分
+  // record the last index that do exchange
+  // the part that behind index has already sorted
+  while (!bubblesort_v1_aux(lo, hi));
+}
 
+template <typename T>
+bool Vector<T>::bubblesort_v1_aux(int lo, int& hi) {
+  bool sorted = true;
+  int hi_ = hi;
+  for (int i = lo; i < hi_; i++) {
+    if (_elem[i] > _elem[i + 1]) {
+      exchange(_elem[i], _elem[i + 1]);
+      sorted = false;
+      hi = i;
+    }
+  }
+  return sorted;
 }
 
 template <typename T>
@@ -312,11 +344,11 @@ T Vector<T>::remove(int r) {
 
 template <typename T>
 int Vector<T>::deduplicate() {
-  int s = _size;
+  // TODO, could be more effecient
   int r = 0;
   while (r < _size) {
-    sequential_find(_elem[r] < 0) ?
-      r++ : remove(_elem[r]);
+    sequential_find(_elem[r], r+1) < 0 ?
+      r++ : remove(r);
   }
 }
 
@@ -326,6 +358,7 @@ std::ostream& operator<< (std::ostream& os, const Vector<ST>& vec) {
   for (int i = 0; i < vec._size - 1; i++) {
     os << vec._elem[i] << " ";
   }
+  // TODO, should not output endl
   os << vec._elem[vec._size - 1] << std::endl;
 }
 
@@ -359,7 +392,12 @@ int Vector<T>::ordered_uniquify() {
   return j - i;
 }
 
-
+template <typename T>
+T Vector<T>::sum() const {
+  // TODO, Only for int
+  T s = 0;
+  for (int i = 0; i < _size; i++) s += _elem[i];
+}
 
 
 

@@ -51,6 +51,9 @@ private:
     x = y;
     y = tmp;
   }
+
+  bool bubblesort_aux(int lo, int  hi);
+  bool bubblesort_v1_aux(int lo, int& hi);
   
 public:
   /*!
@@ -99,6 +102,7 @@ public:
 
   /*
    * \brief Remove a interval, return #ele removed.
+   * index starts from 0
    */
   int remove(int lo, int hi);
   T remove(int r);
@@ -131,6 +135,7 @@ public:
   void quicksort();
   void bubblesort();
   void bubblesort_v1(int lo, int hi);
+  // Not implemented
   void selectionsort();
 
 
@@ -138,7 +143,9 @@ public:
   void shuffle();
 
   // find - unordered
+  // [lo, hi]
   int sequential_find(const T& key, int lo, int hi) const;
+  int sequential_find(const T& key, int lo) const;
   // search - ordered
   int binary_search(const T* key) const;
   int binary_search_v1(const T& key, int lo, int hi) const;
@@ -146,9 +153,9 @@ public:
   int binary_search_v3(const T& key, int lo, int hi) const;
 
   // statistics
-  T mean();
-  T max();
-  T min();
+  T sum() const;
+  T max() const;
+  T min() const;
 
   int disordered() const;
 
