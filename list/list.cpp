@@ -55,10 +55,19 @@ void List<T>::copyNodes(ListNode<T>* p, int n) {
   }
 }
 
+template <typename T>
+List<T>::~List() {
+  clear();
+  delete header;
+  delete trailer;
+}
 
-
-
-
+template <typename T>
+int List<T>::clear() {
+  int oldSize = _size;
+  while (0 < _size) remove(header->succ);
+  return oldSize;
+}
 
 template <typename T>
 ListNode<T>* List<T>::first() {
@@ -71,7 +80,7 @@ ListNode<T>* List<T>::last() {
 }
 
 template <typename T>
-T List<T>::remove(ListNode<T>* p) {
+T& List<T>::remove(ListNode<T>* p) {
   T e = p->data;
   p->pred->succ = p->succ;
   p->succ->pred = p->pred;
@@ -111,7 +120,26 @@ ListNode<T>* List<T>::insertBefore(ListNode<T>* p, T const& e) {
   p->insertAsPred(e);
 }
 
+template <typename T>
+ListNode<T>* List<T>::find(const T& e, int n, ListNode<T>* p) const {
+  while (0 < n--) {
+    if (e == (p = p->pred)->data) return p;
+  }
+  return nullptr;
+}
 
+template <typename T>
+int List<T>::deduplicate() {
+  if (_size < 2) return 0;
+  int oldSize = _size;
+  int r = 0;
+  ListNode<T>* p = header;
+  while (trailer != (p = p->succ)) {
+    ListNode<T>* q = find(p->data, r, p);
+    q ? remove(q) : r++;
+  }
+  return oldSize - _size;
+}
 
 
 

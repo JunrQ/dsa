@@ -27,7 +27,9 @@ private:
   ListNode<T>* trailer;
 
 protected:
+  // init header and trailer
   void init();
+  // Return size
   int clear();
   void copyNodes(ListNode<T>*, int);
   void merge(ListNode<T>*, int, List<T>&, ListNode<T>*, int);
@@ -51,16 +53,22 @@ public:
   int size() { return _size; }
   ListNode<T>* first();
   ListNode<T>* last();
-  T remove(ListNode<T>* p); // TODO
+  T& remove(ListNode<T>* p); // TODO
 
   // Operator
   T& operator[] (int r) const;
+
+  // Find in n pred
+  ListNode<T>* find(const T& e, int n, ListNode<T>* p) const;
 
   // Insert
   ListNode<T>* insertAsFirst(T const& e);
   ListNode<T>* insertAsLast(T const& e);
   ListNode<T>* insertAfter(ListNode<T>* p, T const& e);
   ListNode<T>* insertBefore(ListNode<T>* p, T const& e);
+
+  // Return elements removed
+  int deduplicate();
   
 };
 
