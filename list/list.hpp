@@ -33,12 +33,7 @@ protected:
   int clear();
   void copyNodes(ListNode<T>*, int);
   void merge(ListNode<T>*, int, List<T>&, ListNode<T>*, int);
-
-  // mergesort
-  
-  // selectionSort
-
-  // insertionSort
+  ListNode<T>* selectMax(ListNode<T>*, int);
 
 public:
   // Constructor
@@ -69,6 +64,12 @@ public:
 
   // Return elements removed
   int deduplicate();
+
+  // Sort for n nodes start with p
+  void selectionSort(ListNode<T>* p, int n);
+
+  // traverse
+  void traverse(void (*visit) (T&));
   
 };
 

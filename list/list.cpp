@@ -141,6 +141,46 @@ int List<T>::deduplicate() {
   return oldSize - _size;
 }
 
+template <typename T>
+ListNode<T>* selectMax(ListNode<T>* p, int n) {
+  ListNode<T>* max = p;
+  while (0 < n--) {
+    p = p->succ;
+    // Choose the last one
+    if (p->data >= max->data) max = p;
+  }
+}
+
+template <typename T>
+void List<T>::selectionSort(ListNode<T>* p, int n) {
+  ListNode<T>* head = p->pred;
+  ListNode<T>* tail = p->succ;
+  for (int i = 0; i < n; i++) tail = tail->succ;
+  while (0 < n) {
+    ListNode<T>* max = selectMax(head->succ, n);
+    insertBefore(tail, remove(max));
+    tail = tail->pred;
+    n--;
+  }
+}
+
+template <typename T>
+void List<T>::traverse(void (*visit) (T&)) {
+  for (ListNode<T>* p = header->succ; p != trailer; p=p->succ)
+    visit(p->data);
+}
+
+template <typename T>
+void List<T>::merge(ListNode<T>* p, int n, List<T>&, ListNode<T>* q, int m) {
+  
+}
+
+
+
+
+
+
+
 
 
 
