@@ -171,20 +171,18 @@ void List<T>::traverse(void (*visit) (T&)) {
 }
 
 template <typename T>
-void List<T>::merge(ListNode<T>* p, int n, List<T>&, ListNode<T>* q, int m) {
-  
+void List<T>::merge(ListNode<T>* p, int n, List<T>& L, ListNode<T>* q, int m) {
+  ListNode<T>* pp = p->pred;
+  while (0 < m) {
+    if ((0 < n) && (p->data <= q->data)) {
+      if (q == (p = p->succ)) break;
+      n--;
+    } else {
+      insertBefore(p, L.remove((q = q->succ)->pred));
+      m--;
+    }
+  }
+  p = pp->succ;
 }
 
-
-
-
-
-
-
-
-
-
-
 }
-
-
