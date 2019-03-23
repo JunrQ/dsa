@@ -65,6 +65,5 @@ int main() {
   v1.ordered_uniquify();
   std::cout << "ordered uniquify " << v1;
 
-
   return 0;
 }

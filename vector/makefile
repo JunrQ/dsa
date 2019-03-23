@@ -1,10 +1,10 @@
-obj = main.o vector.o
+obj = test.o vector.o
 
 main : $(obj)
 	g++ $(obj) -o main
 
-main.o : main.cpp
-	g++ -c -ggdb -std=c++11 main.cpp
+test.o : test.cpp
+	g++ -c -ggdb -std=c++11 test.cpp
 
 vector.o : vector.cpp
 	g++ -c -ggdb -std=c++11 vector.cpp
