@@ -1,5 +1,10 @@
 # C++ primer
 
+#### 13.6.2 Move Constructor and Move Assignment
+
+- To enable move operations for our own types, we define a move a constructor and a move-assignment operator.
+- In addition to moving resources, the move constructoor must ensure that the moved-from object is left in a state such that destroying that object will be harmless.
+
 ## Ch15 OOP
 
 Object-oriented programming is base on three fundamental concepts: data abstraction and inheritance and dynamic binding.
@@ -63,3 +68,32 @@ Deribed(arg0, arg1, ...) : BaseConstructor(arg0, arg1,...), mem(argn) {}
 - Aside from overriding inherited virtual functions, a derived class usually should not reuse names defiend in its base class.
 - The base member is hidden even if the functions have different parameter list.
 - Instead of overriding every base-class version that it inherits, a derived class can provide a `using` declaration for the overloaded member. Thus, a `using` declaration for a base-class member function adds all the overloaded instances of that function to the scope of the derived class.
+
+### 15.7 Constructors and Copy Control
+
+**virtual destructors**
+```c++
+class Quote {
+  public virtual ~Quote() = default;
+};
+```
+
+- If that pointer points to a type in an inheritance hierarchy, it is possible that the static type of the pointer might differ from the dynamic type of the object being destroyed.
+- Executing `delete` on a pointer to base that points to a derived object has undefined behavior if the base's destructor is not virtual.
+- If a class defines a destructor -- even if it uses `=default` to use the synthesized version -- the compiler will not synthesize a move operator for that class.
+- Unlike the constructors and assignment operators, the destructor is responsible only for destroying the resources allocated by the derived class.
+- When a derived class defines a copy or move operation, that operation is responsible for copying or moving the entire object, including base-class members.
+
+```c++
+class Base { /* ... */ };
+class D: public Base {
+public:
+  // by default, the base class default constructor initializes the base part of an object
+  // to use the copy or move constructor, we must explicitly call that
+  // constructor in the constructor initializer list
+  D(const D& d) : Base(d) {}
+  D(D&& d) : Base(std::move(d)) {}
+}
+```
+
+- The base-class parts of an object are implicitly destroyed. As a result, unlike the constructors and assignment operators, a derived destructor is responsible only for destroying the resources allocated by the derived class.

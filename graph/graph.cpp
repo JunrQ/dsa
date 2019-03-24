@@ -6,8 +6,6 @@
 namespace dsa {
 
 
-
-
 // ----- Node -----
 template <typename Tv>
 struct Vertex {
@@ -39,6 +37,37 @@ class GraphMatrix : public Graph<Tv, Te> {
 private:
   Vector<Vertex<Tv> > V;
   Vector<Vector<Edge<Te>* > > E;
+public:
+  GraphMatrix() {n = e = 0;}
+  ~GraphMatrix() {
+    for (int j = 0; j < n; j++) {
+      for (int k = 0; k < n; k++) {
+        delete E[j][k];
+      }
+    }
+  }
+
+  virtual Tv& vertex(int i) {return V[i].data;}
+  virtual int inDegree(int i) {return V[i].inDegree;}
+  virtual int outDegree(int i) {return V[i].outDegree;}
+  virtual int firstNbr(int i) {return nextNbr(i, n);}
+  virtual int nextNbr(int i, int j) {
+    while ((-1 < j) && (!exists(i, --j)));
+    return j;
+  }
+  virtual VStatus& status(int i) {return V[i].status;}
+  virtual int& dTime(int i) {return V[i].dTime;}
+  virtual int& fTime(int i) {return V[i].fTime;}
+  virtual int& parent(int i) {return V[i].parent;}
+  virtual int& priority(int i) {return V[i].priority;}
+
+  virtual int insert(Tv const& vertex) {
+    for (int j = 0; j < n; j++)
+      E[j].insert(nullptr);
+    n++;
+    E.insert(Vector<Edge<Te>* >(n, n, (Edge<Te>*) nullptr));
+    return V.insert(Vertex<Tv> (vertex));
+  }
 
 
 
