@@ -73,6 +73,19 @@ public:
 
 };
 
+template <typename Tv, typename Te>
+class GraphList : public Graph<Tv, Te> {
+private:
+  Vector<Vertex<Tv> > V;
+  Vector<List<Edge<Te>* > > E;
+
+public:
+  
+
+
+
+};
+
 
 
 
