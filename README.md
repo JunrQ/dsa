@@ -1,5 +1,7 @@
 # Data Structure and Alghorithms
 
+- - -
+
 Good good study, day day up.
 
 [x] vector
@@ -11,6 +13,6 @@ Good good study, day day up.
 
 **Problems**
 
-  [] lighthouse
-  [] matrix_chain_mul
-  [] rod_cut
+[] lighthouse
+[] matrix_chain_mul
+[] rod_cut
