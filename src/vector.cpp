@@ -5,7 +5,6 @@
 
 namespace dsa {
 
-
 template <typename T>
 void Vector<T>::copyFrom(T const* A, int lo, int hi) {
   _elem = new T[_capacity = 2 * (hi - lo)];
@@ -220,7 +219,7 @@ void Vector<T>::merge(int lo, int mi, int hi) {
   T* A = _elem + lo;
   int lb = mi - lo;
   T* B = new T[lb];
-  for (int i = 0; i < lb; B[i] = A[i++]);
+  for (int i = 0; i < lb; i++) B[i] = A[i];
   int lc = hi - mi;
   T* C = _elem + mi;
   for (int i = 0, j = 0, k = 0; (j < lb) || (k < lc); ) {
@@ -350,6 +349,7 @@ int Vector<T>::deduplicate() {
     sequential_find(_elem[r], r+1) < 0 ?
       r++ : remove(r);
   }
+  return r;
 }
 
 template <typename ST>
@@ -360,6 +360,7 @@ std::ostream& operator<< (std::ostream& os, const Vector<ST>& vec) {
   }
   // TODO, should not output endl
   os << vec._elem[vec._size - 1] << std::endl;
+  return os;
 }
 
 template <typename T>

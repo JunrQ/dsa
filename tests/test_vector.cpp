@@ -14,7 +14,7 @@ int main() {
   std::cout << "Merge sort: " << v1;
 
   v1.insert(4, 52);
-  std::cout << "Insert 12 at 4th " << v1;
+  std::cout << "Insert 52 at 4th " << v1;
 
   v1.shuffle();
   std::cout << "Shuffle: " << v1;

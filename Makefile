@@ -7,20 +7,16 @@ ifndef CXX
 CXX = g++
 endif
 
-INCPATH = -I./include
-CFLAGS = -std=c++11 -fPIC -O2 -ggdb -Wall -finline-functions $(INCPATH)
+INCPATH = -I./include -I./src
+CFLAGS = -std=c++11 -O1 -ggdb -Wall -finline-functions $(INCPATH)
 
-TAR = vector
-OBJS = $(addprefix build/, $(addsuffix .o, $(TAR)))
+vector : tests/test_vector.cpp src/vector.cpp
+	$(CXX) $(CFLAGS) $^ -o build/$@
 
-vector : tests/test_vector.cpp build/vector.o
-	$(CXX) -c $<
-	$(CXX) -o build/vector build/vector.o
+list : tests/test_list.cpp src/list.cpp
+	$(CXX) $(CFLAGS) $^ -o build/$@
 
 clean : 
-	rm -rf build
+	rm -rf build/*
 
-build/%.o : src/%.cpp
-	@mkdir -p $(@D)
-	$(CXX) $(INCPATH) $(CFLAGS) -c $< -o $@
 

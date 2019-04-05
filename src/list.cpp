@@ -1,4 +1,5 @@
-
+#include <iostream>
+#include <stdlib.h>
 
 #include "list.hpp"
 
@@ -80,7 +81,7 @@ ListNode<T>* List<T>::last() {
 }
 
 template <typename T>
-T& List<T>::remove(ListNode<T>* p) {
+T List<T>::remove(ListNode<T>* p) {
   T e = p->data;
   p->pred->succ = p->succ;
   p->succ->pred = p->pred;
@@ -90,8 +91,17 @@ T& List<T>::remove(ListNode<T>* p) {
 }
 
 template <typename T>
+T List<T>::remove(int r) {
+  // TODO if(r > _size) log error
+  ListNode<T>* p = first();
+  while (0 < r--) p = p->succ;
+  T data = remove(p);
+  return data;
+}
+
+template <typename T>
 T& List<T>::operator[] (int r) const {
-  ListNode<T>* p =first();
+  ListNode<T>* p = first();
   while (0 < r--) p = p->succ;
   return p->data;
 }
@@ -111,13 +121,27 @@ ListNode<T>* List<T>::insertAsLast(T const& e) {
 template <typename T>
 ListNode<T>* List<T>::insertAfter(ListNode<T>* p, T const& e) {
   _size++;
-  p->insertAsSucc(e);
+  return p->insertAsSucc(e);
+}
+
+template <typename T>
+ListNode<T>* List<T>::insertAfter(int r, T const& e) {
+  ListNode<T>* p = first();
+  while (0 < r--) p = p->succ;
+  return insertAfter(p, e);
 }
 
 template <typename T>
 ListNode<T>* List<T>::insertBefore(ListNode<T>* p, T const& e) {
   _size++;
-  p->insertAsPred(e);
+  return p->insertAsPred(e);
+}
+
+template <typename T>
+ListNode<T>* List<T>::insertBefore(int r, T const& e) {
+  ListNode<T>* p = first();
+  while (0 < r--) p = p->succ;
+  return insertBefore(p, e);
 }
 
 template <typename T>
@@ -146,7 +170,7 @@ ListNode<T>* selectMax(ListNode<T>* p, int n) {
   ListNode<T>* max = p;
   while (0 < n--) {
     p = p->succ;
-    // Choose the last one
+    // Choose the last one, stability
     if (p->data >= max->data) max = p;
   }
 }
@@ -162,6 +186,11 @@ void List<T>::selectionSort(ListNode<T>* p, int n) {
     tail = tail->pred;
     n--;
   }
+}
+
+template <typename T>
+void List<T>::insertionSort(ListNode<T>* p, int n) {
+  
 }
 
 template <typename T>
@@ -184,5 +213,30 @@ void List<T>::merge(ListNode<T>* p, int n, List<T>& L, ListNode<T>* q, int m) {
   }
   p = pp->succ;
 }
+
+template <typename ST>
+std::ostream& operator<< (std::ostream& os, const List<ST>& li) {
+  // TODO error: member function 'traverse' not viable:
+  // li.traverse([&](const ST& data){ os << data << " "; });
+  for (ListNode<ST>* p = li.header->succ; p != li.trailer; p = p->succ) {
+    os << p->data << " ";
+  }
+  os << std::endl;
+  return os;
+}
+
+template <typename T>
+void List<T>::shuffle() {
+  int max_idx = _size - 1;
+  for (int i = max_idx; i >= 1; i--) {
+    int tmp = rand() % max_idx;
+    if (tmp != i)
+      exchange(_elem[i], _elem[tmp]);
+  }
+}
+
+
+
+
 
 }

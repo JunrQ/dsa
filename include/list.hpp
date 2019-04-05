@@ -26,6 +26,12 @@ private:
   ListNode<T>* header;
   ListNode<T>* trailer;
 
+  inline void exchange(T& x, T& y) {
+    T tmp = x;
+    x = y;
+    y = tmp;
+  }
+
 protected:
   // init header and trailer
   void init();
@@ -48,7 +54,8 @@ public:
   int size() { return _size; }
   ListNode<T>* first();
   ListNode<T>* last();
-  T& remove(ListNode<T>* p); // TODO
+  T remove(ListNode<T>* p);
+  T remove(int r);
 
   // Operator
   T& operator[] (int r) const;
@@ -56,20 +63,34 @@ public:
   // Find in n pred
   ListNode<T>* find(const T& e, int n, ListNode<T>* p) const;
 
+
   // Insert
   ListNode<T>* insertAsFirst(T const& e);
   ListNode<T>* insertAsLast(T const& e);
   ListNode<T>* insertAfter(ListNode<T>* p, T const& e);
   ListNode<T>* insertBefore(ListNode<T>* p, T const& e);
+  ListNode<T>* insertAfter(int r, T const& e);
+  ListNode<T>* insertBefore(int r, T const& e);
+  ListNode<T>* append(T const& e) {return insertAsLast(e);}
 
   // Return elements removed
   int deduplicate();
 
-  // Sort for n nodes start with p
+  void shuffle();
+
+  // Sort
   void selectionSort(ListNode<T>* p, int n);
+  void selectionSort() {selectionSort(first(), _size);}
+  void insertionSort(ListNode<T>* p, int n);
+  void insertionSort() {insertionSort(first(), _size);}
+  void mergeSort(ListNode<T>* p, int n);
+
 
   // traverse
   void traverse(void (*visit) (T&));
+
+  template<typename ST>
+  friend std::ostream& operator<< (std::ostream& os, const List<ST>& li);
   
 };
 
