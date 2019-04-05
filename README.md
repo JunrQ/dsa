@@ -5,7 +5,7 @@
 Good good study, day day up.
 
 - [x] vector
-- [] list
+- [ ] list
 - [] stack
 - [] tree
 - [] hash_table

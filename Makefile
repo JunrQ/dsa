@@ -19,6 +19,8 @@ list : tests/test_list.cpp src/list.cpp
 stack : tests/test_stack.cpp
 	$(CXX) $(CFLAGS) $^ -o build/$@
 
+queue : tests/test_queue.cpp
+	$(CXX) $(CFLAGS) $^ -o build/$@
+
 clean : 
 	rm -rf build/*
-
