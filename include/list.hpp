@@ -58,11 +58,13 @@ public:
   T remove(int r);
 
   // Operator
-  T& operator[] (int r) const;
+  T& operator[] (int r);
 
-  // Find in n pred
+  // Find in n pred, return nullptr if failed
   ListNode<T>* find(const T& e, int n, ListNode<T>* p) const;
-
+  // Search, return last node smaller if failed, sorted
+  // n real preds
+  ListNode<T>* search(const T& e, int n, ListNode<T>* p) const;
 
   // Insert
   ListNode<T>* insertAsFirst(T const& e);
@@ -73,8 +75,10 @@ public:
   ListNode<T>* insertBefore(int r, T const& e);
   ListNode<T>* append(T const& e) {return insertAsLast(e);}
 
-  // Return elements removed
+  // Return elements removed, unsorted
   int deduplicate();
+  // sorted
+  int uniquify();
 
   void shuffle();
 
@@ -84,7 +88,7 @@ public:
   void insertionSort(ListNode<T>* p, int n);
   void insertionSort() {insertionSort(first(), _size);}
   void mergeSort(ListNode<T>* p, int n);
-
+  void mergeSort() {mergeSort(first(), _size);}
 
   // traverse
   void traverse(void (*visit) (T&));

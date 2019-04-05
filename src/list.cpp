@@ -100,7 +100,7 @@ T List<T>::remove(int r) {
 }
 
 template <typename T>
-T& List<T>::operator[] (int r) const {
+T& List<T>::operator[] (int r) {
   ListNode<T>* p = first();
   while (0 < r--) p = p->succ;
   return p->data;
@@ -153,6 +153,14 @@ ListNode<T>* List<T>::find(const T& e, int n, ListNode<T>* p) const {
 }
 
 template <typename T>
+ListNode<T>* List<T>::search(const T& e, int n, ListNode<T>* p) const {
+  while (0 <= n--) { // equal is important
+    if ((p = p->pred)->data <= e) break;
+  }
+  return p;
+}
+
+template <typename T>
 int List<T>::deduplicate() {
   if (_size < 2) return 0;
   int oldSize = _size;
@@ -166,21 +174,33 @@ int List<T>::deduplicate() {
 }
 
 template <typename T>
-ListNode<T>* selectMax(ListNode<T>* p, int n) {
+int List<T>::uniquify() {
+  if (_size < 2) return 0;
+  int oldSize = _size;
+  ListNode<T>* p = header;
+  while (trailer != (p = p->succ)) {
+    if (p->succ->data == p->data) remove(p);
+  }
+  return oldSize - _size;
+}
+
+template <typename T>
+ListNode<T>* List<T>::selectMax(ListNode<T>* p, int n) {
   ListNode<T>* max = p;
-  while (0 < n--) {
+  while (1 < n--) {
     p = p->succ;
     // Choose the last one, stability
     if (p->data >= max->data) max = p;
   }
+  return max;
 }
 
 template <typename T>
 void List<T>::selectionSort(ListNode<T>* p, int n) {
   ListNode<T>* head = p->pred;
-  ListNode<T>* tail = p->succ;
+  ListNode<T>* tail = p;
   for (int i = 0; i < n; i++) tail = tail->succ;
-  while (0 < n) {
+  while (1 < n) {
     ListNode<T>* max = selectMax(head->succ, n);
     insertBefore(tail, remove(max));
     tail = tail->pred;
@@ -190,7 +210,12 @@ void List<T>::selectionSort(ListNode<T>* p, int n) {
 
 template <typename T>
 void List<T>::insertionSort(ListNode<T>* p, int n) {
-  
+  p = p->succ;
+  for (int i = 1; i < n; i++) {
+    insertAfter(search(p->data, i, p), p->data);
+    p = p->succ;
+    remove(p->pred);
+  }
 }
 
 template <typename T>
@@ -214,6 +239,18 @@ void List<T>::merge(ListNode<T>* p, int n, List<T>& L, ListNode<T>* q, int m) {
   p = pp->succ;
 }
 
+template <typename T>
+void List<T>::mergeSort(ListNode<T>* p, int n) {
+  // TODO
+  if (n < 2) return;
+  int m = n >> 1;
+  ListNode<T>* q = p;
+  for (int i = 0; i < m; i++) q = q->succ;
+  mergeSort(p, m);
+  mergeSort(q, n - m);
+  merge(p, m, *this, q, n - m);
+}
+
 template <typename ST>
 std::ostream& operator<< (std::ostream& os, const List<ST>& li) {
   // TODO error: member function 'traverse' not viable:
@@ -231,10 +268,9 @@ void List<T>::shuffle() {
   for (int i = max_idx; i >= 1; i--) {
     int tmp = rand() % max_idx;
     if (tmp != i)
-      exchange(_elem[i], _elem[tmp]);
+      exchange(this->operator[](i), this->operator[](tmp));
   }
 }
-
 
 
 

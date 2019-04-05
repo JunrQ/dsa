@@ -19,4 +19,3 @@ list : tests/test_list.cpp src/list.cpp
 clean : 
 	rm -rf build/*
 
-
