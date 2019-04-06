@@ -1,8 +1,7 @@
 #include <limits.h>
-#include "../stack/stack.hpp"
+#include "stack.hpp"
 
 namespace dsa {
-
 
 typedef enum {UNDISCOVERED, DISCOVERED, VISITED} VStatus;
 typedef enum {UNDETERMINED, TREE, CROSS, FORWARD, BACKWARD} EType;
@@ -23,6 +22,7 @@ private:
     }
   }
 
+  // search algorithms, for one connected domain
   void BFS(int, int&);
   void DFS(int, int&);
   void BCC(int, int&, Stack<int>&);
@@ -39,7 +39,7 @@ public:
   virtual Tv remove(int) = 0;
   // Get vertex
   virtual Tv& vertex(int) = 0;
-  
+  // degree
   virtual int inDegree(int) = 0;
   virtual int outDegree(int) = 0;
   // First neighbor
@@ -67,6 +67,7 @@ public:
   virtual int& weight(int, int) = 0;
 
   // -------- Algorithm ---------
+  // search, for the whole graph, different from *FS
   void bfs(int);
   void dfs(int);
   void bcc(int);

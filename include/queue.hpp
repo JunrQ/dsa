@@ -9,6 +9,5 @@ public:
   bool empty() {return this->size() == 0;}
   void enqueue(const T& e) {this->append(e);}
   T dequeue() {return this->remove(this->first());}
-  T& front() {return this->first()->data;}
-
+  T& front() {return this->first()->data;}ss
 };

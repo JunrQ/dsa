@@ -128,8 +128,4 @@ public:
   }
 }; // class BinTree
 
-
-
 } // namespace dsa
-
-
