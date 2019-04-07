@@ -79,12 +79,78 @@ Stack<Tv>* Graph<Tv, Te>::tSort(int s) {
   Stack<Tv>* S = new Stack<Tv>;
   do {
     if (UNDISCOVERED == status(v)) {
-      while (!S->empty()) S->pop();
-      break;
+      if (!TSort(v, clock, S)) {
+        // if not DAG, make S empty and break (return)
+        while (!S->empty()) S->pop();
+        break;
+      }
     }
-  }
+  } while (s != (v = (++v % n)));
+  return S;
 }
 
+template <typename Tv, typename Te>
+bool Graph<Tv, Te>::TSort(int v, int& clock, Stack<Tv>* S) {
+  dTime(v) = ++clock;
+  status(v) = DISCOVERED;
+  for (int u = firstNbr(v); -1 < u; u = nextNbr(v, u)) {
+    switch (status(u)) {
+      case UNDISCOVERED:
+        parent(u) = v;
+        type(v, u) = TREE;
+        if (!TSort(u, clock, S)) return false;
+        break;
+      case DISCOVERED:
+        type(v, u) = BACKWARD;
+        return false;
+        break;
+      default:
+        type(v, u) = (dTime(v) < dTime(u)) ? FORWARD : CROSS;
+        break;
+    }
+  }
+  status(v) = VISITED;
+  S->push(vertex(v));
+  return true;
+}
+
+template <typename Tv, typename Te> template <typename PU>
+void Graph<Tv, Te>::pfs(int s, PU prioUpdater) {
+  reset();
+  int v = s;
+  do {
+    if (UNDISCOVERED == status(v)) PFS(v, prioUpdater);
+  } while (s != (v = (++v % n)));
+}
+
+template <typename Tv, typename Te> template <typename PU>
+void Graph<Tv, Te>::PFS(int s, PU prioUpdater) {
+  // TODO
+}
+
+// prim algorithm
+template <typename Tv, typename Te> struct PrimPU {
+  virtual void operator() (Graph<Tv, Te>* g, int uk, int v) {
+    if (UNDISCOVERED == g->status(v)) {
+      if (g->priority(v) > g->weight(uk, v)) {
+        g->priority(v) = g->weight(uk, v);
+        g->parent(v) = uk;
+      }
+    }
+  }
+};
+
+// dijkstra algorithm
+template <typename Tv, typename Te> struct DijkstraPU {
+  virtual void operator() (Graph<Tv, Te>* g, int uk, int v) {
+    if (UNDISCOVERED == g->status(v)) {
+      if (g->priority(v) > g->priority(uk) + g->weight(uk, v)) {
+        g->priority(v) = g->priority(uk) + g->weight(uk, v);
+        g->parent(v) = uk;
+      }
+    }
+  }
+};
 
 // ----- Node -----
 template <typename Tv>
