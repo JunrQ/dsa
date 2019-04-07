@@ -63,7 +63,6 @@ static BinNode<T>* removeAt(BinNode<T>* & x, BinNode<T>& hot) {
 
 
 
-
 } // namespace dsa
 
 
