@@ -1,3 +1,9 @@
+/*
+ * 二叉搜索树
+ * 二叉搜索树：中序遍历单调非降
+ * 
+ *
+ */
 
 #include "bin_tree.hpp"
 
@@ -26,6 +32,7 @@ public:
   virtual bool remove(const T& e);
 };
 
+// Not a memeber func
 template <typename T>
 static BinNode<T>* & searchIn(BinNode<T>* & v, const T& e, BinNode<T>& hot) {
   if (!v || (e == v->data)) return v;
@@ -52,20 +59,29 @@ template <typename T>
 static BinNode<T>* removeAt(BinNode<T>* & x, BinNode<T>& hot) {
   BinNode<T>* w = x;
   BinNode<T>* succ = nullptr;
+  // If no left child, we can replace x with its right child
   if (!x->hasLChild()) succ = x = x->rc;
   else if (!x->hasRChild()) succ = x = x->lc;
   else {
+    // Find its succ
     w = w->succ();
-    //
-    // TODO
+    swap(x->data, w->data);
+    // Remove w
+    BinNode<T>* u = w->parent;
+    ((u == x) ? u->rc : u -> lc) = succ = w->rc;
   }
+  hot = w->parent;
+  if (succ) succ->parent = hot;
+  return succ;
 }
 
-
+template <typename T>
+bool BST<T>::remove(const T& e) {
+  BinNode<T>* & x = search(e);
+  if (!x) return false;
+  removeAt(x, _hot);
+  _size--;
+  updateHeight(_hot);
+}
 
 } // namespace dsa
-
-
-
-
-
