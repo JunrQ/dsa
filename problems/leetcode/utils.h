@@ -1,6 +1,6 @@
 
-#ifndef UTILS_H
-#define UTILS_H
+#ifndef LEETCODE_UTILS_H
+#define LEETCODE_UTILS_H
 
 #include <vector>
 #include <algorithm>
@@ -32,9 +32,6 @@ vector<int> argsort(const vector<T>& array) {
 
 	return array_index;
 }
-
-
-
 
 
 #endif
