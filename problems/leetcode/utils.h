@@ -4,6 +4,7 @@
 
 #include <vector>
 #include <algorithm>
+#include <iostream>
 
 using namespace std;
 
@@ -14,6 +15,16 @@ void printIntVector(vector<int>& input) {
     for (int i = 0; i < input.size(); ++i) {
         printf("%d ", input[i]);
     }
+}
+
+
+/**
+ * \brief Print std::vector<string>
+ */
+void printStringVector(vector<string>& input, string suffix="  ") {
+	for (int i = 0; i < input.size(); ++i) {
+		cout << input[i] << suffix;
+	}
 }
 
 
